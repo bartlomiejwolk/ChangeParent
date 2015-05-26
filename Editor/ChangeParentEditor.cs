@@ -12,10 +12,16 @@ namespace ChangeParentEx {
     [CustomEditor(typeof (ChangeParent))]
     public class ChangeParentEditor : Editor {
 
+        #region SERIALIZED PROPERTIES
+
         private SerializedProperty _option;
         private SerializedProperty _parentName;
         private SerializedProperty _parentGO;
         private SerializedProperty _delay;
+
+        #endregion
+
+        #region UNITY MESSAGES
 
         private void OnEnable() {
             _option = serializedObject.FindProperty("_option");
@@ -45,6 +51,8 @@ namespace ChangeParentEx {
             EditorUtility.SetDirty(script);
         }*/
         }
+
+        #endregion
 
     }
 

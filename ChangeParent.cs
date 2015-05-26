@@ -11,6 +11,10 @@ namespace ChangeParentEx {
     /// On enable, change object's parent to "Clones"
     public class ChangeParent : MonoBehaviour {
 
+        #region FIELDS
+        #endregion
+
+        #region INSECTOR FIELDS
         /// Select how to find a new parent.
         [SerializeField]
         private Options _option;
@@ -24,7 +28,9 @@ namespace ChangeParentEx {
         /// Delay before changing parent.
         [SerializeField]
         private float _delay;
+        #endregion
 
+        #region UNITY MESSAGES
         private void OnEnable() {
             switch (_option) {
                 case Options.Name:
@@ -35,6 +41,10 @@ namespace ChangeParentEx {
                     break;
             }
         }
+
+        #endregion
+
+        #region METHODS
 
         private void AssignParentByName() {
             // Find parent go by name.
@@ -50,6 +60,8 @@ namespace ChangeParentEx {
         private void AssignParentByTransform() {
             transform.parent = _parentGO.transform;
         }
+
+        #endregion
     }
 
 }
