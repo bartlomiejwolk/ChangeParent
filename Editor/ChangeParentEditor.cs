@@ -42,8 +42,8 @@ namespace ChangeParentEx {
             serializedObject.ApplyModifiedProperties();
             // Save changes
             /*if (GUI.changed) {
-			EditorUtility.SetDirty(script);
-		}*/
+            EditorUtility.SetDirty(script);
+        }*/
         }
 
     }
