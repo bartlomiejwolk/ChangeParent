@@ -11,7 +11,22 @@ namespace ChangeParentEx {
     /// On enable, change object's parent to "Clones"
     public class ChangeParent : MonoBehaviour {
 
+        #region CONSTANTS
+
+        public const string Version = "v0.1.0";
+        public const string Extension = "ChangeParent";
+
+        #endregion
+        
         #region FIELDS
+
+        /// <summary>
+        /// Allows identify component in the scene file when reading it with
+        /// text editor.
+        /// </summary>
+        [SerializeField]
+        private string componentName = "ChangeParent";
+
         #endregion
 
         #region INSECTOR FIELDS
@@ -29,6 +44,12 @@ namespace ChangeParentEx {
         [SerializeField]
         private float delay;
 
+        [SerializeField]
+        private string description = "Description";
+ 
+        #endregion
+
+        #region PROPERTIES
         /// Select how to find a new parent.
         public Options Option {
             get { return option; }
@@ -51,6 +72,13 @@ namespace ChangeParentEx {
             set { delay = value; }
         }
 
+        /// <summary>
+        /// Optional text to describe purpose of this instance of the component.
+        /// </summary>
+        public string Description {
+            get { return description; }
+            set { description = value; }
+        }
         #endregion
 
         #region UNITY MESSAGES

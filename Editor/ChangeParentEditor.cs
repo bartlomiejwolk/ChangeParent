@@ -18,6 +18,7 @@ namespace ChangeParentEx {
         private SerializedProperty parentName;
         private SerializedProperty parentGO;
         private SerializedProperty delay;
+        private SerializedProperty description;
 
         #endregion
 
@@ -28,12 +29,18 @@ namespace ChangeParentEx {
             parentName = serializedObject.FindProperty("parentName");
             parentGO = serializedObject.FindProperty("parentGO");
             delay = serializedObject.FindProperty("delay");
+            description = serializedObject.FindProperty("description");
         }
 
         public override void OnInspectorGUI() {
             //ChangeParent script = (ChangeParent)target;
             serializedObject.Update();
 
+            DrawVersionLabel();
+            DrawDescriptionTextArea();
+
+            EditorGUILayout.Space();
+            
             DrawOptionDropdown();
             HandleOptionSelection();
             DrawDelayField();
@@ -41,6 +48,9 @@ namespace ChangeParentEx {
             serializedObject.ApplyModifiedProperties();
         }
 
+        #endregion
+
+        #region INSPECTOR CONTROLS
         private void HandleOptionSelection() {
             switch (option.enumValueIndex) {
                 case (int) Options.Name:
@@ -60,6 +70,30 @@ namespace ChangeParentEx {
             EditorGUILayout.PropertyField(option);
         }
 
+        private void DrawVersionLabel() {
+            EditorGUILayout.LabelField(
+                string.Format(
+                    "{0} ({1})",
+                    ChangeParent.Version,
+                    ChangeParent.Extension));
+        }
+
+        private void DrawDescriptionTextArea() {
+            description.stringValue = EditorGUILayout.TextArea(
+                description.stringValue);
+        }
+ 
+        #endregion
+
+        #region METHODS
+
+        [MenuItem("Component/ChangeParent")]
+        private static void AddEntryToComponentMenu() {
+            if (Selection.activeGameObject != null) {
+                Selection.activeGameObject.AddComponent(typeof(ChangeParent));
+            }
+        }
+ 
         #endregion
 
     }
