@@ -1,45 +1,107 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// Copyright (c) 2015 Bartlomiej Wolk (bartlomiejwolk@gmail.com)
+// 
+// This file is part of the ChangeParent extension for Unity. Licensed under
+// the MIT license. See LICENSE file in the project root folder.
+
 using UnityEditor;
-using OneDayGame;
+using UnityEngine;
 
-[CustomEditor(typeof(ChangeParent))]
-public class ChangeParentEditor: GameComponentEditor {
+namespace ChangeParentEx {
 
-	private SerializedProperty _option;
-	private SerializedProperty _parentName;
-	private SerializedProperty _parentGO;
-	private SerializedProperty _delay;
+    [CustomEditor(typeof (ChangeParent))]
+    public class ChangeParentEditor : Editor {
+        #region SERIALIZED PROPERTIES
 
-	public override void OnEnable() {
-		base.OnEnable();
+        private SerializedProperty delay;
+        private SerializedProperty description;
+        private SerializedProperty option;
+        private SerializedProperty parentGO;
+        private SerializedProperty parentName;
 
-		_option = serializedObject.FindProperty("_option");
-		_parentName = serializedObject.FindProperty("_parentName");
-		_parentGO = serializedObject.FindProperty("_parentGO");
-		_delay = serializedObject.FindProperty("_delay");
-	}
+        #endregion SERIALIZED PROPERTIES
 
-	public override void OnInspectorGUI() {
-		base.OnInspectorGUI();
-		//ChangeParent script = (ChangeParent)target;
-		serializedObject.Update();
+        #region UNITY MESSAGES
 
-		EditorGUILayout.PropertyField(_option);
-		switch (_option.enumValueIndex) {
-			case (int)ChangeParent.Options.Name:
-				EditorGUILayout.PropertyField(_parentName);
-				break;
-			case (int)ChangeParent.Options.Transform:
-				EditorGUILayout.PropertyField(_parentGO);
-				break;
-		}
-		EditorGUILayout.PropertyField(_delay);
+        public override void OnInspectorGUI() {
+            serializedObject.Update();
 
-		serializedObject.ApplyModifiedProperties();
-		// Save changes
-		/*if (GUI.changed) {
-			EditorUtility.SetDirty(script);
-		}*/
-	}
+            DrawVersionLabel();
+            DrawDescriptionTextArea();
+
+            EditorGUILayout.Space();
+
+            DrawOptionDropdown();
+            HandleOptionSelection();
+            DrawDelayField();
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private void OnEnable() {
+            option = serializedObject.FindProperty("option");
+            parentName = serializedObject.FindProperty("parentName");
+            parentGO = serializedObject.FindProperty("parentGO");
+            delay = serializedObject.FindProperty("delay");
+            description = serializedObject.FindProperty("description");
+        }
+
+        #endregion UNITY MESSAGES
+
+        #region INSPECTOR CONTROLS
+
+        private void DrawDelayField() {
+            EditorGUILayout.PropertyField(
+                delay,
+                new GUIContent(
+                    "Delay",
+                    "Delay before changing parent."));
+        }
+
+        private void DrawDescriptionTextArea() {
+            description.stringValue = EditorGUILayout.TextArea(
+                description.stringValue);
+        }
+
+        private void DrawOptionDropdown() {
+            EditorGUILayout.PropertyField(
+                option,
+                new GUIContent(
+                    "Option",
+                    "Defines how to find the parent game object."));
+        }
+
+        private void DrawVersionLabel() {
+            EditorGUILayout.LabelField(
+                string.Format(
+                    "{0} ({1})",
+                    ChangeParent.Version,
+                    ChangeParent.Extension));
+        }
+
+        private void HandleOptionSelection() {
+            switch (option.enumValueIndex) {
+                case (int) Options.Name:
+                    EditorGUILayout.PropertyField(parentName);
+                    break;
+
+                case (int) Options.Transform:
+                    EditorGUILayout.PropertyField(parentGO);
+                    break;
+            }
+        }
+
+        #endregion INSPECTOR CONTROLS
+
+        #region METHODS
+
+        [MenuItem("Component/ChangeParent")]
+        private static void AddEntryToComponentMenu() {
+            if (Selection.activeGameObject != null) {
+                Selection.activeGameObject.AddComponent(typeof (ChangeParent));
+            }
+        }
+
+        #endregion METHODS
+    }
+
 }

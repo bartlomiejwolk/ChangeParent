@@ -1,68 +1,124 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// Copyright (c) 2015 Bartlomiej Wolk (bartlomiejwolk@gmail.com)
+// 
+// This file is part of the ChangeParent extension for Unity. Licensed under
+// the MIT license. See LICENSE file in the project root folder.
 
-namespace OneDayGame {
+using UnityEngine;
 
-	/// On enable, change object's parent to "Clones"
-	public class ChangeParent : GameComponent {
+namespace ChangeParentEx {
 
-		/// How to find a new parent options.
-		public enum Options {
-			/// Search for parent by its name.
-			Name,
-			/// Pass a transform to be a parent.
-			Transform }
+    public class ChangeParent : MonoBehaviour {
+        #region CONSTANTS
 
-		/// Select how to find a new parent.
-		[SerializeField]
-		private Options _option;
+        public const string Extension = "ChangeParent";
+        public const string Version = "v0.1.0";
 
-		[SerializeField]
-		private string _parentName = "Clones";
+        #endregion CONSTANTS
 
-		[SerializeField]
-		private GameObject _parentGO;
+        #region FIELDS
 
-		/// Delay before changing parent.
-		[SerializeField]
-		private float _delay;
+        /// <summary>
+        ///     Allows identify component in the scene file when reading it with
+        ///     text editor.
+        /// </summary>
+#pragma warning disable 0414
+        [SerializeField]
+        private string componentName = "ChangeParent";
+#pragma warning restore 0414
 
-		public override void Start () {
-			base.Start();
-		}
+        #endregion FIELDS
 
-		public override void Update () {
-			base.Update();
-		}
+        #region INSECTOR FIELDS
 
-		public override void OnEnable() {
-			switch (_option) {
-				case Options.Name:
-					// Find parent go by name.
-					_parentGO = GameObject.Find(_parentName);
-					// Create parent if doesn't exists.
-					if (_parentGO == null) {
-						_parentGO = new GameObject(_parentName);
-					}
-					AssignNewParent();
-					break;
-				case Options.Transform:
-					AssignNewParent();
-					break;
-			}
-		}
+        /// Delay before changing parent.
+        [SerializeField]
+        private float delay;
 
-		private void AssignNewParent() {
-			// Start coroutine only if the parenting should be delayed.
-			if (_delay != 0) {
-				StartCoroutine(Timer.Start(
-							_delay,
-							() => { transform.parent = _parentGO.transform; }
-							));
-			}
-			else {
-				transform.parent = _parentGO.transform;
-			}
-		}
-	}
+        [SerializeField]
+        private string description = "Description";
+
+        /// Select how to find a new parent.
+        [SerializeField]
+        private Options option;
+
+        [SerializeField]
+        private GameObject parentGO;
+
+        [SerializeField]
+        private string parentName = "Clones";
+
+        #endregion INSECTOR FIELDS
+
+        #region PROPERTIES
+
+        /// Delay before changing parent.
+        public float Delay {
+            get { return delay; }
+            set { delay = value; }
+        }
+
+        /// <summary>
+        ///     Optional text to describe purpose of this instance of the
+        ///     component.
+        /// </summary>
+        public string Description {
+            get { return description; }
+            set { description = value; }
+        }
+
+        /// Select how to find a new parent.
+        public Options Option {
+            get { return option; }
+            set { option = value; }
+        }
+
+        public GameObject ParentGO {
+            get { return parentGO; }
+            set { parentGO = value; }
+        }
+
+        public string ParentName {
+            get { return parentName; }
+            set { parentName = value; }
+        }
+
+        #endregion PROPERTIES
+
+        #region UNITY MESSAGES
+
+        private void OnEnable() {
+            switch (Option) {
+                case Options.Name:
+                    Invoke("AssignParentByName", Delay);
+                    break;
+
+                case Options.Transform:
+                    Invoke("AssignParentByTransform", Delay);
+                    break;
+            }
+        }
+
+        #endregion UNITY MESSAGES
+
+        #region METHODS
+
+        private void AssignParentByName() {
+            // Find parent go by name.
+            ParentGO = GameObject.Find(ParentName);
+
+            // Create parent if doesn't exists.
+            if (ParentGO == null) {
+                ParentGO = new GameObject(ParentName);
+            }
+
+            transform.parent = ParentGO.transform;
+        }
+
+        private void AssignParentByTransform() {
+            transform.parent = ParentGO.transform;
+        }
+
+        #endregion METHODS
+    }
+
 }
