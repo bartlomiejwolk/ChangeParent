@@ -63,11 +63,19 @@ namespace ChangeParentEx {
         }
 
         private void DrawDelayField() {
-            EditorGUILayout.PropertyField(delay);
+            EditorGUILayout.PropertyField(
+                delay,
+                new GUIContent(
+                    "Delay",
+                    "Delay before changing parent."));
         }
 
         private void DrawOptionDropdown() {
-            EditorGUILayout.PropertyField(option);
+            EditorGUILayout.PropertyField(
+                option,
+                new GUIContent(
+                    "Option",
+                    "Defines how to find the parent game object."));
         }
 
         private void DrawVersionLabel() {
