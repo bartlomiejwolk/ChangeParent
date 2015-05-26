@@ -30,10 +30,10 @@ namespace ChangeParentEx {
 
             EditorGUILayout.PropertyField(_option);
             switch (_option.enumValueIndex) {
-                case (int) ChangeParent.Options.Name:
+                case (int) Options.Name:
                     EditorGUILayout.PropertyField(_parentName);
                     break;
-                case (int) ChangeParent.Options.Transform:
+                case (int) Options.Transform:
                     EditorGUILayout.PropertyField(_parentGO);
                     break;
             }

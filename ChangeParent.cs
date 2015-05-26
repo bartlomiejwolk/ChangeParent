@@ -11,13 +11,6 @@ namespace ChangeParentEx {
     /// On enable, change object's parent to "Clones"
     public class ChangeParent : MonoBehaviour {
 
-        /// How to find a new parent options.
-        public enum Options {
-            /// Search for parent by its name.
-            Name,
-            /// Pass a transform to be a parent.
-            Transform }
-
         /// Select how to find a new parent.
         [SerializeField]
         private Options _option;
@@ -58,4 +51,5 @@ namespace ChangeParentEx {
             transform.parent = _parentGO.transform;
         }
     }
+
 }
