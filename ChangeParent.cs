@@ -6,10 +6,10 @@
 using UnityEngine;
 using System.Collections;
 
-namespace OneDayGame {
+namespace ChangeParentEx {
 
 	/// On enable, change object's parent to "Clones"
-	public class ChangeParent : GameComponent {
+	public class ChangeParent : MonoBehaviour {
 
 		/// How to find a new parent options.
 		public enum Options {
@@ -32,42 +32,30 @@ namespace OneDayGame {
 		[SerializeField]
 		private float _delay;
 
-		public override void Start () {
-			base.Start();
-		}
-
-		public override void Update () {
-			base.Update();
-		}
-
-		public override void OnEnable() {
+		private void OnEnable() {
 			switch (_option) {
 				case Options.Name:
-					// Find parent go by name.
-					_parentGO = GameObject.Find(_parentName);
-					// Create parent if doesn't exists.
-					if (_parentGO == null) {
-						_parentGO = new GameObject(_parentName);
-					}
-					AssignNewParent();
+			        Invoke("AssignParentByName", _delay);
 					break;
 				case Options.Transform:
-					AssignNewParent();
+					Invoke("AssignParentByTransform", _delay);
 					break;
 			}
 		}
 
-		private void AssignNewParent() {
-			// Start coroutine only if the parenting should be delayed.
-			if (_delay != 0) {
-				StartCoroutine(Timer.Start(
-							_delay,
-							() => { transform.parent = _parentGO.transform; }
-							));
-			}
-			else {
-				transform.parent = _parentGO.transform;
-			}
+	    private void AssignParentByName() {
+            // Find parent go by name.
+	        _parentGO = GameObject.Find(_parentName);
+	        // Create parent if doesn't exists.
+	        if (_parentGO == null) {
+	            _parentGO = new GameObject(_parentName);
+	        }
+
+	        transform.parent = _parentGO.transform;
+	    }
+
+	    private void AssignParentByTransform() {
+            transform.parent = _parentGO.transform;
 		}
 	}
 }
