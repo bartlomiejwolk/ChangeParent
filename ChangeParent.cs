@@ -28,16 +28,39 @@ namespace ChangeParentEx {
         /// Delay before changing parent.
         [SerializeField]
         private float delay;
+
+        /// Select how to find a new parent.
+        public Options Option {
+            get { return option; }
+            set { option = value; }
+        }
+
+        public string ParentName {
+            get { return parentName; }
+            set { parentName = value; }
+        }
+
+        public GameObject ParentGO {
+            get { return parentGO; }
+            set { parentGO = value; }
+        }
+
+        /// Delay before changing parent.
+        public float Delay {
+            get { return delay; }
+            set { delay = value; }
+        }
+
         #endregion
 
         #region UNITY MESSAGES
         private void OnEnable() {
-            switch (option) {
+            switch (Option) {
                 case Options.Name:
-                    Invoke("AssignParentByName", delay);
+                    Invoke("AssignParentByName", Delay);
                     break;
                 case Options.Transform:
-                    Invoke("AssignParentByTransform", delay);
+                    Invoke("AssignParentByTransform", Delay);
                     break;
             }
         }
@@ -48,17 +71,17 @@ namespace ChangeParentEx {
 
         private void AssignParentByName() {
             // Find parent go by name.
-            parentGO = GameObject.Find(parentName);
+            ParentGO = GameObject.Find(ParentName);
             // Create parent if doesn't exists.
-            if (parentGO == null) {
-                parentGO = new GameObject(parentName);
+            if (ParentGO == null) {
+                ParentGO = new GameObject(ParentName);
             }
 
-            transform.parent = parentGO.transform;
+            transform.parent = ParentGO.transform;
         }
 
         private void AssignParentByTransform() {
-            transform.parent = parentGO.transform;
+            transform.parent = ParentGO.transform;
         }
 
         #endregion
