@@ -34,7 +34,14 @@ namespace ChangeParentEx {
             //ChangeParent script = (ChangeParent)target;
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(option);
+            DrawOptionDropdown();
+            HandleOptionSelection();
+            DrawDelayField();
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private void HandleOptionSelection() {
             switch (option.enumValueIndex) {
                 case (int) Options.Name:
                     EditorGUILayout.PropertyField(parentName);
@@ -43,13 +50,14 @@ namespace ChangeParentEx {
                     EditorGUILayout.PropertyField(parentGO);
                     break;
             }
-            EditorGUILayout.PropertyField(delay);
+        }
 
-            serializedObject.ApplyModifiedProperties();
-            // Save changes
-            /*if (GUI.changed) {
-            EditorUtility.SetDirty(script);
-        }*/
+        private void DrawDelayField() {
+            EditorGUILayout.PropertyField(delay);
+        }
+
+        private void DrawOptionDropdown() {
+            EditorGUILayout.PropertyField(option);
         }
 
         #endregion
