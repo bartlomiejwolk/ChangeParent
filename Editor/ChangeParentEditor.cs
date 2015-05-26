@@ -23,7 +23,6 @@ namespace ChangeParentEx {
         #region UNITY MESSAGES
 
         public override void OnInspectorGUI() {
-            //ChangeParent script = (ChangeParent)target;
             serializedObject.Update();
 
             DrawVersionLabel();

@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace ChangeParentEx {
 
-    /// On enable, change object's parent to "Clones"
     public class ChangeParent : MonoBehaviour {
         #region CONSTANTS
 
@@ -22,8 +21,10 @@ namespace ChangeParentEx {
         ///     Allows identify component in the scene file when reading it with
         ///     text editor.
         /// </summary>
+#pragma warning disable 0414
         [SerializeField]
         private string componentName = "ChangeParent";
+#pragma warning restore 0414
 
         #endregion FIELDS
 
@@ -104,6 +105,7 @@ namespace ChangeParentEx {
         private void AssignParentByName() {
             // Find parent go by name.
             ParentGO = GameObject.Find(ParentName);
+
             // Create parent if doesn't exists.
             if (ParentGO == null) {
                 ParentGO = new GameObject(ParentName);
