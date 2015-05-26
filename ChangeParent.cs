@@ -17,27 +17,27 @@ namespace ChangeParentEx {
         #region INSECTOR FIELDS
         /// Select how to find a new parent.
         [SerializeField]
-        private Options _option;
+        private Options option;
 
         [SerializeField]
-        private string _parentName = "Clones";
+        private string parentName = "Clones";
 
         [SerializeField]
-        private GameObject _parentGO;
+        private GameObject parentGO;
 
         /// Delay before changing parent.
         [SerializeField]
-        private float _delay;
+        private float delay;
         #endregion
 
         #region UNITY MESSAGES
         private void OnEnable() {
-            switch (_option) {
+            switch (option) {
                 case Options.Name:
-                    Invoke("AssignParentByName", _delay);
+                    Invoke("AssignParentByName", delay);
                     break;
                 case Options.Transform:
-                    Invoke("AssignParentByTransform", _delay);
+                    Invoke("AssignParentByTransform", delay);
                     break;
             }
         }
@@ -48,17 +48,17 @@ namespace ChangeParentEx {
 
         private void AssignParentByName() {
             // Find parent go by name.
-            _parentGO = GameObject.Find(_parentName);
+            parentGO = GameObject.Find(parentName);
             // Create parent if doesn't exists.
-            if (_parentGO == null) {
-                _parentGO = new GameObject(_parentName);
+            if (parentGO == null) {
+                parentGO = new GameObject(parentName);
             }
 
-            transform.parent = _parentGO.transform;
+            transform.parent = parentGO.transform;
         }
 
         private void AssignParentByTransform() {
-            transform.parent = _parentGO.transform;
+            transform.parent = parentGO.transform;
         }
 
         #endregion

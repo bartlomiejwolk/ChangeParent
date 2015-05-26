@@ -14,36 +14,36 @@ namespace ChangeParentEx {
 
         #region SERIALIZED PROPERTIES
 
-        private SerializedProperty _option;
-        private SerializedProperty _parentName;
-        private SerializedProperty _parentGO;
-        private SerializedProperty _delay;
+        private SerializedProperty option;
+        private SerializedProperty parentName;
+        private SerializedProperty parentGO;
+        private SerializedProperty delay;
 
         #endregion
 
         #region UNITY MESSAGES
 
         private void OnEnable() {
-            _option = serializedObject.FindProperty("_option");
-            _parentName = serializedObject.FindProperty("_parentName");
-            _parentGO = serializedObject.FindProperty("_parentGO");
-            _delay = serializedObject.FindProperty("_delay");
+            option = serializedObject.FindProperty("option");
+            parentName = serializedObject.FindProperty("parentName");
+            parentGO = serializedObject.FindProperty("parentGO");
+            delay = serializedObject.FindProperty("delay");
         }
 
         public override void OnInspectorGUI() {
             //ChangeParent script = (ChangeParent)target;
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(_option);
-            switch (_option.enumValueIndex) {
+            EditorGUILayout.PropertyField(option);
+            switch (option.enumValueIndex) {
                 case (int) Options.Name:
-                    EditorGUILayout.PropertyField(_parentName);
+                    EditorGUILayout.PropertyField(parentName);
                     break;
                 case (int) Options.Transform:
-                    EditorGUILayout.PropertyField(_parentGO);
+                    EditorGUILayout.PropertyField(parentGO);
                     break;
             }
-            EditorGUILayout.PropertyField(_delay);
+            EditorGUILayout.PropertyField(delay);
 
             serializedObject.ApplyModifiedProperties();
             // Save changes
